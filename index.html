@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="input.css" rel="stylesheet" />
+    <title>App</title>
+  </head>
+  <body>
+    <div id="gameBoard" class="m-auto h-[90vh] w-[90vh] bg-gray-200"></div>
+    <div id="playerDisplay" class="text-xl">Player: x</div>
+    <div id="result" class="hidden">text</div>
+
+    <template id="mainGameBoardTemplate">
+      <div id="mainGameBoard" class="grid h-full grid-cols-3 grid-rows-3"></div>
+    </template>
+
+    <template id="smallBoardTemplate">
+      <div class="smallBoardWrapper">
+        <div class="smallBoardElement grid h-full grid-cols-3 grid-rows-3 p-2"></div>
+      </div>
+    </template>
+
+    <template id="fieldButtonTemplate">
+      <button></button>
+    </template>
+
+    <script type="module" src="main.js"></script>
+  </body>
+</html>

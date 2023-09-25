@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+button {
+  @apply md:text-4xl;
+}
+
+.B2 {
+  @apply border-2;
+  @apply border-slate-700;
+}
+
+.B1,
+.B3 {
+  @apply border-x-2;
+  @apply border-slate-700;
+}
+
+.A2,
+.C2 {
+  @apply border-y-2;
+  @apply border-slate-700;
+}
+
+.b2 {
+  @apply border-2;
+  @apply border-slate-400;
+}
+
+.b1,
+.b3 {
+  @apply border-x-2;
+  @apply border-slate-400;
+}
+
+.a2,
+.c2 {
+  @apply border-y-2;
+  @apply border-slate-400;
+}
