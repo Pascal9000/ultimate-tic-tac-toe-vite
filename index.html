@@ -7,9 +7,11 @@
     <title>App</title>
   </head>
   <body>
-    <div id="gameBoard" class="m-auto h-[90vh] w-[90vh] bg-gray-200"></div>
-    <div id="playerDisplay" class="text-xl">Player: x</div>
-    <div id="result" class="hidden">text</div>
+    <div id="gameBoard" class="m-auto h-[80vh] w-[80vh] bg-gray-200"></div>
+    <div class="mt-2 flex justify-center">
+      <div id="playerDisplay" class="font-mono text-3xl">Player: x</div>
+      <div id="result" class="hidden">text</div>
+    </div>
 
     <template id="mainGameBoardTemplate">
       <div id="mainGameBoard" class="grid h-full grid-cols-3 grid-rows-3"></div>

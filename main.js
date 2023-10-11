@@ -89,10 +89,6 @@ function createGameBoard() {
   const mainGameBoardTemplate = document.getElementById("mainGameBoardTemplate");
   const mainGameBoardClone = document.importNode(mainGameBoardTemplate.content, true);
   const mainGameBoard = mainGameBoardClone.querySelector("div");
-  // const mainGameBoard = document.createElement("div");
-  // mainGameBoard.setAttribute("id", "mainGameBoard");
-  // // Move css to HTML
-  // mainGameBoard.setAttribute("class", "grid h-full grid-cols-3 grid-rows-3");
 
   const columnLabels = ["A", "B", "C"];
   const fragment = document.createDocumentFragment();
@@ -108,6 +104,7 @@ function createGameBoard() {
   game.appendChild(mainGameBoard);
 }
 
+// currentPlayerSymbol should be a var not a param of the function
 function togglePlayer(p1, p2, currentPlayerSymbol) {
   return currentPlayerSymbol == p1 ? p2 : p1;
 }
@@ -126,48 +123,52 @@ function updateMainScoreBoard(smallBoardId, mainScoreBoard, currentPlayerSymbol)
   return updatedScoreboard;
 }
 
-function incrementBoardRoundCount(numerator) {
-  const updatedCounter = numerator + 1;
-  return updatedCounter;
-}
-
 // Checks for a win by filtering the current player symbols out of the specific score board array and check for the length. If one array is 0 length -> win!; save return current player symbol
 function checkSmallGameResult(scoreBoard, roundCount, currentPlayerSymbol) {
   const maxRounds = 9;
-  for (let i = 0; i < scoreBoard.length; i++) {
-    const filteredScoreBoard = scoreBoard[i].filter((value) => value !== currentPlayerSymbol);
-    if (filteredScoreBoard.length === 0) {
-      return currentPlayerSymbol;
-    } else if (roundCount === maxRounds) {
-      return "draw";
+  if (roundCount < 3) {
+    return null;
+  } else {
+    for (let i = 0; i < scoreBoard.length; i++) {
+      const filteredScoreBoard = scoreBoard[i].filter((value) => value !== currentPlayerSymbol);
+      if (filteredScoreBoard.length === 0) {
+        return currentPlayerSymbol;
+      } else if (roundCount === maxRounds) {
+        return "draw";
+      }
     }
+    return null;
   }
-  return null;
 }
 
 function checkMainGameResult(gameDataObject, currentPlayerSymbol) {
-  const scoreBoard = gameDataObject.mainGameBoard.scoreBoard;
-  for (let i = 0; i < scoreBoard.length; i++) {
-    const filteredScoreBoard = scoreBoard[i].filter((value) => value !== currentPlayerSymbol);
-    console.log(filteredScoreBoard);
-    if (filteredScoreBoard.length === 0) {
-      return currentPlayerSymbol;
-    }
-  }
-  // Check if draw
-  // store all smallBoardResults in array
-  const results = [];
-  for (let row = "A"; row <= "C"; row++) {
-    for (let col = 1; col <= 3; col++) {
-      const cellKey = row + col;
-      const cell = gameDataObject[cellKey];
-      results.push(cell.result);
-    }
-  }
-  if (results.includes(null)) {
-    return null; // If any result is null, return null
+  if (gameDataObject.mainGameBoard.numerator < 3) {
+    return null;
   } else {
-    return "Draw!"; // If all results are not null, return draw
+    const scoreBoard = gameDataObject.mainGameBoard.scoreBoard;
+
+    for (let i = 0; i < scoreBoard.length; i++) {
+      const filteredScoreBoard = scoreBoard[i].filter((value) => value !== currentPlayerSymbol);
+      if (filteredScoreBoard.length === 0) {
+        gameDataObject.mainGameBoard.result = currentPlayerSymbol;
+        return currentPlayerSymbol;
+      }
+    }
+    // Check if draw
+    // store all smallBoardResults in array
+    const results = [];
+    for (let row = "A"; row <= "C"; row++) {
+      for (let col = 1; col <= 3; col++) {
+        const cellKey = row + col;
+        const cell = gameDataObject[cellKey];
+        results.push(cell.result);
+      }
+    }
+    if (results.includes(null)) {
+      return null; // If any result is null, return null
+    } else {
+      return "Draw!"; // If all results are not null, return draw
+    }
   }
 }
 
@@ -193,7 +194,7 @@ function processMove(clickedButtonId, gameDataObject) {
 
 document.addEventListener("DOMContentLoaded", function () {
   const gameBoard = document.getElementById("gameBoard");
-  const resultBanner = document.getElementById("result");
+  // const resultBanner = document.getElementById("result");
   const playerDisplay = document.getElementById("playerDisplay");
 
   let availableBoards = [
@@ -214,29 +215,32 @@ document.addEventListener("DOMContentLoaded", function () {
   let gameDataObject = [];
   gameDataObject = initializingGame();
 
-  console.log(gameDataObject);
+  // console.log(gameDataObject);
 
   // Player one starts the game
   let currentPlayerSymbol = gameDataObject.p1;
 
-  gameBoard.addEventListener("click", (event) => {
+  // gameBoard.addEventListener("click", (event) => {
+  function clickEventHandler(event) {
     const targetButton = event.target;
     const clickedBoardId = targetButton.parentNode.id;
     const targetBoard = targetButton.parentNode.id.slice(-2);
 
-    if (targetButton.matches("button") && targetButton.textContent === "" && availableBoards.includes(clickedBoardId)) {
+    const playedButton = targetButton.classList.contains("p1-icon") || targetButton.classList.contains("p2-icon");
+
+    if (targetButton.matches("button") && !playedButton && availableBoards.includes(clickedBoardId)) {
       const clickedButtonId = targetButton.id.slice(-2);
 
-      gameDataObject[targetBoard].numerator = incrementBoardRoundCount(gameDataObject[targetBoard].numerator);
-      // console.log(
-      //   `smallBoardElement: ${targetBoard}, button: ${clickedButtonId}`
-      // );
+      gameDataObject[targetBoard].numerator += 1;
 
       playerDisplay.textContent = `Player: ${
         currentPlayerSymbol === gameDataObject.p1 ? gameDataObject.p2 : gameDataObject.p1
       }`;
 
-      targetButton.textContent = currentPlayerSymbol;
+      const playerIcon = currentPlayerSymbol === "x" ? "p1-icon" : "p2-icon";
+
+      targetButton.classList.add(playerIcon);
+      // currentPlayerSymbol === "x" ? targetButton.classList.add("p1-icon") : targetButton.classList.add("p2-icon");
 
       gameDataObject[targetBoard].scoreBoard = updateSmallScoreBoard(
         clickedButtonId,
@@ -249,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
         gameDataObject[targetBoard].numerator,
         currentPlayerSymbol,
       );
-
+      // if win on small board
       if (gameResult !== null) {
         gameDataObject[targetBoard].result = gameResult;
         gameDataObject.mainGameBoard.scoreBoard = updateMainScoreBoard(
@@ -257,9 +261,21 @@ document.addEventListener("DOMContentLoaded", function () {
           gameDataObject.mainGameBoard.scoreBoard,
           currentPlayerSymbol,
         );
-        console.log(gameDataObject);
-        const mainResult = checkMainGameResult(gameDataObject, currentPlayerSymbol);
-        console.log(mainResult);
+        gameDataObject.mainGameBoard.numerator += 1;
+        //remove small Board and add the player symbol
+        const element = document.getElementById(`smallBoardWrapper-${targetBoard}`);
+        while (element.firstChild) {
+          element.removeChild(element.firstChild);
+        }
+        // element.classList.add("flex", "flex-col", "justify-center", `${currentPlayerSymbol}`);
+        const resultElem = document.createElement("div");
+        console.log(resultElem);
+        resultElem.classList.add(playerIcon, "w-full", "h-full");
+        console.log(playerIcon);
+
+        // resultElem.innerText = currentPlayerSymbol;
+        // resultElem.classList.add("text-center", "py-auto");
+        element.appendChild(resultElem);
       }
 
       // remove all backgrounds from last round
@@ -268,32 +284,27 @@ document.addEventListener("DOMContentLoaded", function () {
         allSmallBoards[i].classList.remove("bg-orange-200");
       }
 
-      // add new backgrounds for the available fields for next move
-      availableBoards = processMove(clickedButtonId, gameDataObject);
-      for (let i = 0; i < availableBoards.length; i++) {
-        const nextBoardElem = document.getElementById(availableBoards[i]);
-        nextBoardElem.classList.add("bg-orange-200");
+      const finalResult = checkMainGameResult(gameDataObject, currentPlayerSymbol);
+      if (finalResult) {
+        playerDisplay.textContent = `${currentPlayerSymbol} Wins!`;
+        const winStreak = document.getElementsByClassName(playerIcon);
+        for (let i = 0; i < winStreak.length; i++) {
+          winStreak[i].classList.add("bg-blue-200");
+        }
+        //remove event listener
+        gameBoard.removeEventListener("click", clickEventHandler);
+      } else {
+        // add new backgrounds for the available fields for next move
+        availableBoards = processMove(clickedButtonId, gameDataObject);
+        for (let i = 0; i < availableBoards.length; i++) {
+          const nextBoardElem = document.getElementById(availableBoards[i]);
+          nextBoardElem.classList.add("bg-orange-200");
+        }
       }
 
-      // Create a function for this
-      // Combine it with the check win and return both the score board and the result
-      if (gameDataObject[targetBoard].result === currentPlayerSymbol) {
-        resultBanner.classList.add("text-xl"),
-          resultBanner.classList.remove("hidden"),
-          (resultBanner.textContent = "Wins!");
-      } else if (gameDataObject[targetBoard].result === "draw") {
-        resultBanner.classList.add("text-xl"),
-          resultBanner.classList.remove("hidden"),
-          (resultBanner.textContent = "Draw!");
-        currentPlayerSymbol = togglePlayer(gameDataObject.p1, gameDataObject.p2, currentPlayerSymbol);
-      }
       currentPlayerSymbol = togglePlayer(gameDataObject.p1, gameDataObject.p2, currentPlayerSymbol);
-
-      //remove event listener
-      if (gameDataObject.mainGameBoard.result !== null) {
-        gameBoard.removeEventListener("click");
-      }
-      // console.log(gameDataObject);
     }
-  });
+  }
+  // });
+  gameBoard.addEventListener("click", clickEventHandler);
 });

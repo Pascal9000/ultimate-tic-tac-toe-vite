@@ -23,19 +23,113 @@ button {
   @apply border-slate-700;
 }
 
+.p1-icon {
+  background-image: url("./cross.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.p2-icon {
+  background-image: url("./circle.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.a1 {
+  @apply border-t-2;
+  @apply border-t-transparent;
+  @apply border-r-2;
+  @apply border-r-slate-400;
+  @apply border-b-2;
+  @apply border-b-slate-400;
+  @apply border-l-2;
+  @apply border-l-transparent;
+}
+
+.a2 {
+  @apply border-t-2;
+  @apply border-t-slate-400;
+  @apply border-r-2;
+  @apply border-r-slate-400;
+  @apply border-b-2;
+  @apply border-b-slate-400;
+  @apply border-l-2;
+  @apply border-l-transparent;
+}
+
+.a3 {
+  @apply border-t-2;
+  @apply border-t-slate-400;
+  @apply border-r-2;
+  @apply border-r-slate-400;
+  @apply border-b-2;
+  @apply border-b-transparent;
+  @apply border-l-2;
+  @apply border-l-transparent;
+}
+
+.b1 {
+  @apply border-t-2;
+  @apply border-t-transparent;
+  @apply border-r-2;
+  @apply border-r-slate-400;
+  @apply border-b-2;
+  @apply border-b-slate-400;
+  @apply border-l-2;
+  @apply border-l-slate-400;
+}
+
 .b2 {
-  @apply border-2;
-  @apply border-slate-400;
+  @apply border-t-2;
+  @apply border-t-slate-400;
+  @apply border-r-2;
+  @apply border-r-slate-400;
+  @apply border-b-2;
+  @apply border-b-slate-400;
+  @apply border-l-2;
+  @apply border-l-slate-400;
 }
 
-.b1,
 .b3 {
-  @apply border-x-2;
-  @apply border-slate-400;
+  @apply border-t-2;
+  @apply border-t-slate-400;
+  @apply border-r-2;
+  @apply border-r-slate-400;
+  @apply border-b-2;
+  @apply border-b-transparent;
+  @apply border-l-2;
+  @apply border-l-slate-400;
 }
 
-.a2,
+.c1 {
+  @apply border-t-2;
+  @apply border-t-transparent;
+  @apply border-r-2;
+  @apply border-r-transparent;
+  @apply border-b-2;
+  @apply border-b-slate-400;
+  @apply border-l-2;
+  @apply border-l-slate-400;
+}
+
 .c2 {
-  @apply border-y-2;
-  @apply border-slate-400;
+  @apply border-t-2;
+  @apply border-t-slate-400;
+  @apply border-r-2;
+  @apply border-r-transparent;
+  @apply border-b-2;
+  @apply border-b-slate-400;
+  @apply border-l-2;
+  @apply border-l-slate-400;
+}
+
+.c3 {
+  @apply border-t-2;
+  @apply border-t-slate-400;
+  @apply border-r-2;
+  @apply border-r-transparent;
+  @apply border-b-2;
+  @apply border-b-transparent;
+  @apply border-l-2;
+  @apply border-l-slate-400;
 }
