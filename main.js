@@ -1,7 +1,6 @@
 import createGameBoard from "./components/gameBoard";
 import * as scoreBoard from "./components/gameScore";
 
-// currentPlayerSymbol should be a var not a param of the function
 function togglePlayer(p1, p2, currentPlayerSymbol) {
   return currentPlayerSymbol == p1 ? p2 : p1;
 }
@@ -96,13 +95,11 @@ document.addEventListener("DOMContentLoaded", function () {
         while (element.firstChild) {
           element.removeChild(element.firstChild);
         }
-        // element.classList.add("flex", "flex-col", "justify-center", `${currentPlayerSymbol}`);
+
         const resultElem = document.createElement("div");
 
         resultElem.classList.add(playerIcon, "w-full", "h-full");
 
-        // resultElem.innerText = currentPlayerSymbol;
-        // resultElem.classList.add("text-center", "py-auto");
         element.appendChild(resultElem);
       }
 

@@ -4,13 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="input.css" rel="stylesheet" />
+    <link rel="preload" as="image" href="cross.png" />
+    <link rel="preload" as="image" href="circle.png" />
     <title>App</title>
   </head>
   <body>
-    <div id="gameBoard" class="m-auto h-[100vw] w-[100vw] bg-gray-200 md:h-[80vh] md:w-[80vh]"></div>
+    <div class="pb-2 pt-1 text-center font-mono text-[7vw] lg:text-[5vh]">Ultimate Tic Tac Toe</div>
+    <div id="gameBoard" class="m-auto h-[100vw] w-[100vw] bg-gray-200 lg:h-[80vh] lg:w-[80vh]"></div>
     <div class="mt-2 flex justify-center">
-      <div id="playerDisplay" class="font-mono text-3xl">Player: x</div>
-      <div id="result" class="hidden">text</div>
+      <div id="playerDisplay" class="font-mono text-[5vh]">Player: x</div>
     </div>
 
     <template id="mainGameBoardTemplate">
